@@ -9,13 +9,22 @@ class User:
 	Qtr_T=""
 	Qtr_No=""
 	Num=""
-	def __init__(self,eid,desg,name,qt,qn,num):
+	def __init__(self,eid="",desg="",name="",qt="",qn="",num=""):
 		self.EmpID=eid
 		self.Desg=desg
 		self.Name=name
 		self.Qtr_T=qt
 		self.Qtr_No=qn
 		self.Num=num
+	def change(self,eid,desg,name,qt,qn,num):
+		self.EmpID=eid
+		self.Desg=desg
+		self.Name=name
+		self.Qtr_T=qt
+		self.Qtr_No=qn
+		self.Num=num
+
+userl=User()
 
 @app.route('/view')
 def view():
@@ -25,6 +34,10 @@ def view():
 	cur.execute("Select * from Users")
 	rows=cur.fetchall()
 	return render_template('view.html',rows=rows)
+
+@app.route('/mainmenu')
+def mmenu():
+	return render_template("mainmenu.html",user=userl)
 
 @app.route("/")
 def begin():
@@ -39,11 +52,12 @@ def check():
 			cur=con.cursor()
 			cur.execute('Select * from users where EmpID = ? AND Password=?',(user,pwd))
 			rows=cur.fetchone()
+			if user=="admin":
+				return render_template("admin.html")
 			if rows is None:
-				return render_template("fail.html")
-			userl=User(rows[0],rows[1],rows[2],rows[3],rows[4],rows[5])
+				return render_template("fail.html")			
+			userl.change(rows[0],rows[1],rows[2],rows[3],rows[4],rows[5])
 			return render_template("true.html",user=userl)
-
 
 if __name__=='__main__':
 	app.run(debug=True)
