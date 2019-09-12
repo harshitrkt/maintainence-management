@@ -6,21 +6,18 @@ class User:
 	EmpID=""
 	Desg=""
 	Name=""
-	Qtr_T=""
 	Qtr_No=""
 	Num=""
-	def change(self,eid,desg,name,qt,qn,num):
+	def change(self,eid,desg,name,qn,num):
 		self.EmpID=eid
 		self.Desg=desg
 		self.Name=name
-		self.Qtr_T=qt
 		self.Qtr_No=qn
 		self.Num=num
 	def clear(self):
 		self.EmpID=""
 		self.Desg=""
 		self.Name=""
-		self.Qtr_T=""
 		self.Qtr_No=""
 		self.Num=""
 	def check(self):
@@ -59,9 +56,37 @@ def exit():
 	userl.clear()
 	return render_template("exit.html",user=userl)
 
+@app.route('/newAcc')
+def newacc():
+	return render_template("newAcc.html")
+
 @app.route("/")
 def begin():
 	return render_template("login.html")
+
+@app.route("/saveacc",methods=["POST","GET"])
+def saveacc():
+	if request.method=="POST":
+		eid=request.form["EmpID"]
+		sal=request.form["sal"]
+		name=request.form["name"]
+		qn=request.form["qtrno"]
+		num=request.form["num"]
+		pwd=request.form["pwd"]
+		with sqlite3.connect("data.sqlite") as con:
+			cur=con.cursor()
+			cur.execute('Select * from users where EmpID = ? OR Name = ?',(eid,name))
+			rows=cur.fetchone()
+			if rows is None:
+				if eid is ""  or name is "" or qn is "" or num is "" or pwd is "":
+					return render_template("useraddfail.html") 
+				cur.execute("INSERT into Users Values(?,?,?,?,?,?)",(eid,sal,name,qn,num,pwd))
+				con.commit()	
+				return render_template("useraddsuccess.html")
+			else:			
+				con.rollback()
+				return render_template("useraddfail.html")
+		
 
 @app.route("/logincheck",methods=["POST","GET"])
 def check():
@@ -76,7 +101,7 @@ def check():
 				return render_template("admin.html")
 			if rows is None:
 				return render_template("fail.html")			
-			userl.change(rows[0],rows[1],rows[2],rows[3],rows[4],rows[5])
+			userl.change(rows[0],rows[1],rows[2],rows[3],rows[4])
 			return render_template("true.html",user=userl)
 
 if __name__=='__main__':

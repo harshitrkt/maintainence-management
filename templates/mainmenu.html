@@ -4,9 +4,13 @@
 </head>
    <body>
       <h1> Welcome {{user.Name}} !!</h1>
-      <h3><br>
-      Main Menu</h3><br>
-      Please choose an option<br>
-      Name: {{user.Name}}<br>
+      <h3>
+      Main Menu</h3>
+      Please choose an option<br><br>
+      <form action="/newreq" method = "get">
+      	<button type="submit"> Add a new Request</button><br>
+      	<button type="submit" formaction="/pending">View Pending Requests</button><br>
+      	<button type="submit" formaction="/completed">View Completed Requests</button><br>
+      	<button type="submit" formaction="/exit">Log out</button>
    </body>
 </html>

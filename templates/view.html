@@ -6,13 +6,12 @@
       <h1>Users Table</h1>
       <table border =5>
       	<thead>
-      		<td>EmpID </td>
-      		<td>Desg. </td>
-      		<td>Name</td>
-      		<td>Qtr_t</td>
-      		<td>Qtr_No</td>
-      		<td>Number</td>
-      		<td>Password</td>
+      		<td><b>EmpID</b></td>
+      		<td><b>Desg.</b></td>
+      		<td><b>Name</b></td>
+      		<td><b>Qtr_No</b></td>
+      		<td><b>Number</b></td>
+      		<td><b>Password</b></td>
       	</thead>
 
       	{% for row in rows %}
@@ -23,7 +22,6 @@
       		<td> {{row[3]}}</td>
       		<td> {{row[4]}}</td>
       		<td> {{row[5]}}</td>
-      		<td> {{row[6]}}</td>
       	</tr>
       	{% endfor %}
       </table>
