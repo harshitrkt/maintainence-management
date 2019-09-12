@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>View Pending Requests</title>
+</head>
+<body>
+	<h1>View Pending Requests</h1>
+      <table border =5>
+      	<thead>
+      		<td><b>Request ID</b></td>
+      		<td><b>Main</b></td>
+      		<td><b>Type.</b></td>
+      		<td><b>Sub Type</b></td>
+      		<td><b>Remarks</b></td>
+                  <td><b>Feedback</b></td>
+      	</thead>
+
+      	{% for row in rows %}
+      	<tr>
+      		<td> {{row[0]}}</td>
+      		<td> {{row[1]}}</td>
+      		<td> {{row[2]}}</td>
+      		<td> {{row[3]}}</td>
+      		<td> {{row[4]}}</td>
+                  <td> {{row[5]}}</td>
+      	</tr>
+      	{% endfor %}
+      </table>
+      Total Records: {{rows|length}}
+      <br><br>
+      <form action="/mainmenu" method="=GET">
+            <input type="submit" Value="Back">
+      </form>
+</body>
+</html>

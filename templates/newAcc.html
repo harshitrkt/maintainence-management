@@ -7,7 +7,7 @@
 	<h2> Create an Account</h2>
 	Please enter each field in the boxes below<br>
 	<form action="/saveacc" method="post">
-		Employee ID<input type="text" name="EmpID"><br>
+		Employee ID<input type="text" name="EmpID" required><br>
 		Salutation <select name="sal">
 			<option value="Mr.">Mr.</option>
 			<option value="Mrs.">Mrs.</option>
@@ -15,11 +15,14 @@
 			<option value="Dr.">Dr.</option>
 		</select>
 		&nbsp;&nbsp;
-		Name <input type="text" name="name"><br>
-		Qtr. No. <input type="text" name="qtrno"><br>
-		Number <input type="text" name="num" maxlength="10"><br>
-		Password <input type="password" name="pwd"><br><br>
+		Name <input type="text" name="name" required><br>
+		Qtr. No. <input type="text" name="qtrno" required><br>
+		Number <input type="text" name="num" maxlength="10" required><br>
+		Password <input type="password" name="pwd" required><br><br>
 		<input type="submit" value="Submit">
+	</form>
+	<form action="/" method="GET"><br>
+		<input type="submit" value="Back">
 	</form>
 		
 </body>

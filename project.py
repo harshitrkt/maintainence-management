@@ -45,11 +45,19 @@ def newreq():
 
 @app.route('/pending')
 def pending():
-	return render_template("pending.html",user=userl)
+	con=sqlite3.connect("data.sqlite")
+	cur=con.cursor()
+	cur.execute("Select ReqID,Main,Type,Stype,Remarks from Orders where EmpID=? AND Completed='No'",(userl.EmpID,))
+	rows=cur.fetchall()
+	return render_template("pending.html",rows=rows)
 
 @app.route('/completed')
 def completed():
-	return render_template("completed.html",user=userl)
+	con=sqlite3.connect("data.sqlite")
+	cur=con.cursor()
+	cur.execute("Select ReqID,Main,Type,Stype,Remarks,Feedback from Orders where EmpID=? AND Completed='Yes'",(userl.EmpID,))
+	rows=cur.fetchall()
+	return render_template("completed.html",rows=rows)
 
 @app.route('/exit')
 def exit():
@@ -78,8 +86,6 @@ def saveacc():
 			cur.execute('Select * from users where EmpID = ? OR Name = ?',(eid,name))
 			rows=cur.fetchone()
 			if rows is None:
-				if eid is ""  or name is "" or qn is "" or num is "" or pwd is "":
-					return render_template("useraddfail.html") 
 				cur.execute("INSERT into Users Values(?,?,?,?,?,?)",(eid,sal,name,qn,num,pwd))
 				con.commit()	
 				return render_template("useraddsuccess.html")
