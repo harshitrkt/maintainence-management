@@ -4,8 +4,106 @@
 	<title>Add a New Request</title>
 </head>
 <body>
+	<script language="javascript">
+		var arr=new Array();
+		arr[0]=new Array("Select...");
+		arr[1]=new Array("Select...","Carpentery Jobs","Fabrication Jobs","Masonary Jobs","Plumbing Jobs","Painting Jobs");
+		arr[2]=new Array("Select...","New Installation","Maintainence");
+		arr[3]=new Array("Select...","Telephone","Internet Connection","Television");
+		arr[4]=new Array("Select...","Medical Test","Hygenic Test");
+
+		function tchange(main){
+			var comboValue;
+			switch(main.value){
+				case "Select": comboValue=0;break;
+				case "Building": comboValue=1;break;
+				case "Electrical": comboValue=2;break;
+				case "Communication": comboValue=3;break;
+				case "Medical": comboValue=4;break;
+			}
+			document.forms["form"].elements["type"].options.length=0;
+			for (var i=0;i<arr[comboValue].length;i++){
+				var option = document.createElement("option");
+				option.setAttribute('value',arr[comboValue][i]);
+				option.innerHTML = arr[comboValue][i];
+				document.forms["form"].elements["type"].appendChild(option);
+			}
+		}
+
+		function find(s){
+			if(s=="Select...") return 0;
+			else if(s=="Carpentery Jobs"||s=="New Installation"||s=="Telephone"||s=="Medical Test") return 1;
+			else if(s=="Fabrication Jobs"||s=="Maintainence"||s=="Internet Connection"||s=="Hygenic Test") return 2;
+			else if(s=="Masonary Jobs"||s=="Television") return 3;
+			else if(s=="Plumbing Jobs") return 4;
+			else if(s=="Painting Jobs") return 5;
+		}
+
+		function stchange(main,type){
+			var arr=new Array();
+			arr[0]=("Select...")
+			if(main.value=="Building"){
+				arr[1]=new Array("Fixing of cooler frame", "GI Wire Painting", "Removal of Cooler Frame", "Medicine Cabinet repair/replacement", "Repairing of Jhoola seat", "Wardrobe Repair", "Door/Window shutter repair/replacement", "Door/Window ventilator repair/replacement", "Door/Window wiremesh repair/replacement", "Pelmet repair", "AC Maintainence");
+				arr[2]=new Array("Railings repairing", "Repairing of Cloth poles");
+				arr[3]=new Array("Boundary Wall Work", "Car Shed repairing", "Channel grouting for AC", "Drain Works", "Filter in Drains", "Kitchen Platform Repairing", "Leakage/Seapage", "Outside floor repairing");
+				arr[4]=new Array("Cleaning of chocking drain pipes", "Repairing / Replacement of CI fittings", "Repairing of Cancealed GI Pipe", "Repairing of Concealed GI Pipe", "Repairing of Plumbing fittings", "Repairing of leakages", "Repairing of swereage line", "Replacement of Plumbing fittings", "Replacement of Sanitary fittings", "Replacement of new pipes in existing sewer");
+				arr[5]=new Array("Outside Disptempering", "Distempering inside Home");
+			}
+			else if(main.value=="Electrical"){
+				arr[1]=new Array("Installation of new AC", "Installation of Cooler", "Installation of Ceiling Light");
+				arr[2]=new Array("Blown Up Fuse", "Tubelight Replacement", "Circuit Set up");
+			}
+			else if(main.value=="Communication"){
+				arr[1]=new Array("New Connection", "Connection Issues", "Telephone Set Replacement");
+				arr[2]=new Array("New Connection", "Report Connectivity Issues", "Reception Issues");
+				arr[3]=new Array("New Connection", "Change current Channel plans", "Signal Issues", "Connection Issues");
+			}
+			else if(main.value=="Medical"){
+				arr[1]=new Array("Health Checkup", "Blood Sugar test", "Blood Sample Collection", "ECG", "Dressing", "Injection");
+				arr[2]=new Array("Pest Control", "Ergonomic Checkup", "Bacteria Control");
+			}
+			comboValue=find(String(type.value));
+			document.forms["form"].elements["stype"].options.length=0;
+			for (var i=0;i<arr[comboValue].length;i++){
+				var option = document.createElement("option");
+				option.setAttribute('value',arr[comboValue][i]);
+				option.innerHTML = arr[comboValue][i];
+				document.forms["form"].elements["stype"].appendChild(option);
+			}
+		}
+	</script>
 	<h2>Add a New Request</h2>
-	<br><br>
-	
+	<br>
+	<form name="form" action="/reqadd" method="POST">
+		Name &nbsp;<input type="text" name="name"value="{{user.Desg}} {{user.Name}}" readonly>
+		<br>
+		Qtr. No. &nbsp; <input type="text" name="qtr"value={{user.Qtr_No}} readonly size="7">
+		&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+		Employee ID <input type="text" name="eid"value={{user.EmpID}} readonly>
+		<br>
+		Main &nbsp; <select name="main" onchange="tchange(this);">
+			<option value="Select" selected>Select...</option>
+			<option value="Building">Building</option>
+			<option value="Electrical">Electrical</option>
+			<option value="Communication">Communication</option>
+			<option value="Medical">Medical</option>
+		</select>
+		&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Type&nbsp;
+		<select name="type" onchange="stchange(main,this);">
+			<option value="0">Select...</option>
+		</select>
+		<br>
+		Sub Type &nbsp;
+		<select name="stype">
+			<option value="0">Select...</option>
+		</select>
+		<br>
+		Remarks &nbsp; <input type="text" name="rem" size="35"required><br>
+		Number <input type="text" name="num"value={{user.Num}} readonly><br><br>
+		<input type="submit" value="Submit">
+	</form>
+	<form action="/mainmenu" method="=GET">
+            <input type="submit" Value="Back">
+      </form>
 </body>
 </html>

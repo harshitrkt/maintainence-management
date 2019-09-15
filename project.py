@@ -34,7 +34,14 @@ def view():
 	cur.execute("Select * from Users")
 	rows=cur.fetchall()
 	return render_template('view.html',rows=rows)
-
+@app.route('/orderadmin')
+def adminview():
+	con = sqlite3.connect("data.sqlite")
+	con.row_factory= sqlite3.Row
+	cur=con.cursor()
+	cur.execute("Select * from Orders")
+	rows=cur.fetchall()
+	return render_template('adminview.html',rows=rows)
 @app.route('/mainmenu')
 def mmenu():
 	return render_template("mainmenu.html",user=userl)
@@ -71,6 +78,25 @@ def newacc():
 @app.route("/")
 def begin():
 	return render_template("login.html")
+
+@app.route("/reqadd",methods=["POST","GET"])
+def reqadd():
+	if request.method=="POST":
+		main=request.form["main"]
+		typ=request.form["type"]
+		styp=request.form["stype"]
+		rem=request.form["rem"]
+		name=request.form["name"]
+		qn=request.form["qtr"]
+		eid=userl.EmpID
+		num=userl.Num
+		with sqlite3.connect("data.sqlite") as con:
+			cur=con.cursor()
+			cur.execute('Select COUNT(*) from Orders')
+			len=cur.fetchone()
+			cur.execute('INSERT into Orders Values(?,?,?,?,?,?,?,?,?,?,?)',(16500+len[0],eid,name,qn,main,typ,styp,rem,num,"No",0))
+			con.commit()
+		return render_template("reqaddsuccess.html",req=16500+len[0])
 
 @app.route("/saveacc",methods=["POST","GET"])
 def saveacc():

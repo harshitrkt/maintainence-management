@@ -1,0 +1,44 @@
+<html>
+<head>
+	<title> View List </title>
+</head>
+   <body>
+      <h1>Orders Table</h1>
+      <table border =5>
+      	<thead>
+                  <td><b>ReqID</b></td>
+      		<td><b>EmpID</b></td>
+      		<td><b>Name</b></td>
+      		<td><b>Qtr_No</b></td>
+                  <td><b>Main</b></td>
+                  <td><b>Type</b></td>
+                  <td><b>Sub Type</b></td>
+                  <td><b>Remarks</b></td>
+      		<td><b>Number</b></td>
+      		<td><b>Completed</b></td>
+                  <td><b>Feedback</b></td>
+      	</thead>
+
+      	{% for row in rows %}
+      	<tr>
+      		<td> {{row[0]}}</td>
+      		<td> {{row[1]}}</td>
+      		<td> {{row[2]}}</td>
+      		<td> {{row[3]}}</td>
+      		<td> {{row[4]}}</td>
+      		<td> {{row[5]}}</td>
+                  <td> {{row[6]}}</td>
+                  <td> {{row[7]}}</td>
+                  <td> {{row[8]}}</td>
+                  <td> {{row[9]}}</td>
+                  <td> {{row[10]}}</td>
+      	</tr>
+      	{% endfor %}
+      </table>
+      <br>
+      <form action="/" method="=GET">
+            <input type="submit" Value="Log Out">
+      </form>
+
+   </body>
+</html>
