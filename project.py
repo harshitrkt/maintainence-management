@@ -34,6 +34,29 @@ def view():
 	cur.execute("Select * from Users")
 	rows=cur.fetchall()
 	return render_template('view.html',rows=rows)
+
+@app.route('/changecomp',methods=["POST","GET"])
+def change():
+	r=request.form["rid"]
+	c=request.form["comp"]
+	print((r,))
+	val=r.split()
+	print(val)
+	with sqlite3.connect("data.sqlite") as con:
+		cur=con.cursor()
+		cur.execute("Select * from Orders where ReqID=(?) ",(r,))
+		rows=cur.fetchone()
+		print(rows)
+		if rows is not None:
+			cur.execute("UPDATE Orders set Completed = (?) WHERE ReqID = (?)",(c,r))
+			con.commit()
+			cur.execute("Select * from Orders")
+			rows=cur.fetchall()
+			return render_template('adminview.html',rows=rows)
+		else:			
+			con.rollback()
+			return render_template("compfail.html")
+
 @app.route('/orderadmin')
 def adminview():
 	con = sqlite3.connect("data.sqlite")
@@ -57,6 +80,7 @@ def pending():
 	cur.execute("Select ReqID,Main,Type,Stype,Remarks from Orders where EmpID=? AND Completed='No'",(userl.EmpID,))
 	rows=cur.fetchall()
 	return render_template("pending.html",rows=rows)
+	con.close()
 
 @app.route('/completed')
 def completed():
@@ -65,6 +89,7 @@ def completed():
 	cur.execute("Select ReqID,Main,Type,Stype,Remarks,Feedback from Orders where EmpID=? AND Completed='Yes'",(userl.EmpID,))
 	rows=cur.fetchall()
 	return render_template("completed.html",rows=rows)
+	con.close()
 
 @app.route('/exit')
 def exit():
@@ -113,11 +138,12 @@ def saveacc():
 			rows=cur.fetchone()
 			if rows is None:
 				cur.execute("INSERT into Users Values(?,?,?,?,?,?)",(eid,sal,name,qn,num,pwd))
-				con.commit()	
+				con.commit()
 				return render_template("useraddsuccess.html")
-			else:			
+			else:
 				con.rollback()
 				return render_template("useraddfail.html")
+			conn.close()
 		
 
 @app.route("/logincheck",methods=["POST","GET"])

@@ -36,7 +36,13 @@
       	{% endfor %}
       </table>
       <br>
-      <form action="/" method="=GET">
+      <form action="/changecomp" method="POST">
+            Req ID <input type="text" name="rid">
+            &nbsp;&nbsp;&nbsp;&nbsp;Completed ?  <input type="radio" name="comp" value="Yes"> Yes
+            <input type="radio" name="comp" value="No"> No
+            <input type="submit" value="Confirm"><br>
+      </form>
+      <form action="/" method="GET">
             <input type="submit" Value="Log Out">
       </form>
 
